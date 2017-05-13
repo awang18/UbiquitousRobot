@@ -11,7 +11,7 @@ class Ball {
   Ball() {
     x = random((width - rad) + rad / 2);
     y = random((height - rad) + rad / 2);
-    rad = 10;
+    rad = 20;
     float r = random(256);
     float g = random(256);
     float b = random(256);
@@ -21,10 +21,22 @@ class Ball {
     state = 0;
   }
 
+  void setState(int newState) {
+    state = newState;
+  }
+
+  void setDirection(float x, float y) {
+    dx = x;
+    dy = y;
+  }
+
   void move() {
-    x = x + dx;
-    y = y + dy;
-    bounce();
+    if (state == 0) {
+      x = x + dx;
+      y = y + dy;
+      bounce();
+    } else if (state == 1) {
+    }
   }
 
   void bounce() {
@@ -37,6 +49,15 @@ class Ball {
 
   void display() {
     fill(c);
-    ellipse(x, y, rad, rad);
+    if (state == 0) {
+      ellipse(x, y, rad, rad);
+    } else if (state == 1) {
+      System.out.println("Expand");
+    }
+  }
+
+  boolean collides(Ball other) {
+    float d = dist(x, y, other.x, other.y);
+    return d < rad;
   }
 }
