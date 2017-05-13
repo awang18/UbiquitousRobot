@@ -21,21 +21,48 @@ class Ball {
     state = 0;
   }
 
+  Ball(int newX, int newY, int newDx, int newDy) {
+    this();
+    x = newX;
+    y = newY;
+    dx = newDx;
+    dy = newDy;
+  }
+
   void setState(int newState) {
     state = newState;
   }
 
-  void setDirection(float x, float y) {
-    dx = x;
-    dy = y;
+  void stopMoving() {
+    dx = 0;
+    dy = 0;
+    state = 1;
   }
 
+  int getState() {
+    return state;
+  }
+
+  float getRadius() {
+    return rad;
+  }
+  
   void move() {
+    System.out.println(state);
     if (state == 0) {
       x = x + dx;
       y = y + dy;
       bounce();
     } else if (state == 1) {
+      System.out.println("expand");
+      expand();
+      if (rad >= 150) {
+         System.out.println(state + " state "); 
+         state = 2;
+      }
+    } else if (state == 2) {
+      System.out.println("shrink");
+      shrink();
     }
   }
 
@@ -49,15 +76,35 @@ class Ball {
 
   void display() {
     fill(c);
-    if (state == 0) {
-      ellipse(x, y, rad, rad);
-    } else if (state == 1) {
-      System.out.println("Expand");
-    }
+    ellipse(x, y, rad, rad);
   }
 
   boolean collides(Ball other) {
+    // For the initial ball
+    //if (state == 1 || other.state == 1) {
     float d = dist(x, y, other.x, other.y);
     return d < rad;
+    //}
+    //return false;
+  }
+
+  void expand() {
+    if (rad >= 100) {
+     state = 2; 
+    }
+    
+    if (rad < 150) {
+      System.out.println(rad);
+      rad++;
+    }
+    
+    
+  }
+
+  void shrink() {
+    System.out.println("SHRINK");
+    if (rad >= 0) {
+      rad--;
+    }
   }
 }

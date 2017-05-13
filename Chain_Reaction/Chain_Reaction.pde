@@ -18,14 +18,10 @@ void draw() {
     balls[i].display();
     balls[i].move();
     if (reactionStarted == true) {
-      ////System.out.println("expand");
-      //Ball startBall = new Ball();
-      //startBall.display();
-      //startBall.setState(1);
       for (int j = 0; j < balls.length; j++) {
         if (i != j && balls[i].collides(balls[j])) {
-           balls[i].setDirection(0,0);
-           balls[j].setDirection(0,0);
+          balls[i].stopMoving();
+          balls[j].stopMoving();
         }
       }
     }
@@ -34,4 +30,5 @@ void draw() {
 
 void mouseClicked() {
   reactionStarted = true;
+  Ball startBall = new Ball(mouseX, mouseY, 0, 0);
 }
