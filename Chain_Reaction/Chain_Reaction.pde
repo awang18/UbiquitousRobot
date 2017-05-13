@@ -1,5 +1,6 @@
 Ball[] balls;
 boolean reactionStarted;
+Ball startBall;
 
 void setup() {
   size(600, 600);
@@ -18,9 +19,15 @@ void draw() {
     balls[i].display();
     balls[i].move();
     if (reactionStarted == true) {
+      startBall.display();
+      startBall.move();
       for (int j = 0; j < balls.length; j++) {
-        if (i != j && balls[i].collides(balls[j])) {
+        if ((i != j && balls[i].collides(balls[j]))) {
           balls[i].stopMoving();
+          balls[j].stopMoving();
+        } else if (startBall.collides(balls[i])) {
+          balls[i].stopMoving(); 
+        } else if (startBall.collides(balls[j])) {
           balls[j].stopMoving();
         }
       }
@@ -29,6 +36,13 @@ void draw() {
 }
 
 void mouseClicked() {
-  reactionStarted = true;
-  Ball startBall = new Ball(mouseX, mouseY, 0, 0);
+  createStartBall();
+}
+
+void createStartBall() {
+  if (reactionStarted == false) {
+    //System.out.println("Start Ball");
+    startBall = new Ball(mouseX, mouseY, 0, 0, 1);
+    reactionStarted = true;
+  }
 }

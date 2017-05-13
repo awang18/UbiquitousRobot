@@ -21,12 +21,13 @@ class Ball {
     state = 0;
   }
 
-  Ball(int newX, int newY, int newDx, int newDy) {
+  Ball(int newX, int newY, int newDx, int newDy, int newState) {
     this();
     x = newX;
     y = newY;
     dx = newDx;
     dy = newDy;
+    state = newState;
   }
   
   void stopMoving() {
@@ -67,7 +68,7 @@ class Ball {
 
   boolean collides(Ball other) {
     // For the initial ball and state 3 balls
-    if /*(state == 1 || other.state == 1 &&*/ (state != 3 && other.state != 3) {
+    if ((state == 1 || other.state == 1) && (state != 3 && other.state != 3)) {
       float d = dist(x, y, other.x, other.y);
       return d < rad - 10;
     }
@@ -91,4 +92,5 @@ class Ball {
       state = 3;
     }
   }
+  
 }
