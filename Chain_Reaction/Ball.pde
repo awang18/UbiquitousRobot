@@ -44,13 +44,13 @@ class Ball {
       x = x + dx;
       y = y + dy;
       bounce();
-    } else if (state == 2) {
-      //System.out.println("shrink");
-      shrink();
     } else if (state == 1) {
       //System.out.println("expand");
       expand();
-    }
+    } else if (state == 2) {
+      //System.out.println("shrink");
+      shrink();
+    } 
   }
 
   void bounce() {
@@ -70,13 +70,13 @@ class Ball {
     // For the initial ball and state 3 balls
     if ((state == 1 || other.state == 1) && (state != 3 && other.state != 3)) {
       float d = dist(x, y, other.x, other.y);
-      return d < rad - 10;
+      return d < rad + other.rad - 50; // Almost touching
     }
     return false;
   }
 
   void expand() {
-    if (rad < 150) {
+    if (rad < 175) {
       //System.out.println(rad);
       rad++;
     } else {
