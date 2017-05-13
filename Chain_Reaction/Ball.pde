@@ -6,7 +6,7 @@ class Ball {
   color c;
   float dx;
   float dy;
-  int state;
+  int state; // 0-moving, 1-expanding, 2-shrinking, 3-dead
 
   Ball() {
     x = random((width - rad) + rad / 2);
@@ -28,41 +28,27 @@ class Ball {
     dx = newDx;
     dy = newDy;
   }
-
-  void setState(int newState) {
-    state = newState;
-  }
-
-  void stopMoving() {
-    dx = 0;
-    dy = 0;
-    state = 1;
-  }
-
-  int getState() {
-    return state;
-  }
-
-  float getRadius() {
-    return rad;
-  }
   
+  void stopMoving() {
+    if (state == 0) {
+      dx = 0;
+      dy = 0;
+      state = 1;
+    }
+  }
+
   void move() {
-    System.out.println(state);
+    //System.out.println(state);
     if (state == 0) {
       x = x + dx;
       y = y + dy;
       bounce();
-    } else if (state == 1) {
-      System.out.println("expand");
-      expand();
-      if (rad >= 150) {
-         System.out.println(state + " state "); 
-         state = 2;
-      }
     } else if (state == 2) {
-      System.out.println("shrink");
+      //System.out.println("shrink");
       shrink();
+    } else if (state == 1) {
+      //System.out.println("expand");
+      expand();
     }
   }
 
@@ -80,31 +66,29 @@ class Ball {
   }
 
   boolean collides(Ball other) {
-    // For the initial ball
-    //if (state == 1 || other.state == 1) {
-    float d = dist(x, y, other.x, other.y);
-    return d < rad;
-    //}
-    //return false;
+    // For the initial ball and state 3 balls
+    if /*(state == 1 || other.state == 1 &&*/ (state != 3 && other.state != 3) {
+      float d = dist(x, y, other.x, other.y);
+      return d < rad - 10;
+    }
+    return false;
   }
 
   void expand() {
-    if (rad >= 100) {
-     state = 2; 
-    }
-    
     if (rad < 150) {
-      System.out.println(rad);
+      //System.out.println(rad);
       rad++;
+    } else {
+       state = 2; 
     }
-    
-    
   }
 
   void shrink() {
-    System.out.println("SHRINK");
+    //System.out.println("SHRINK");
     if (rad >= 0) {
       rad--;
+    } else {
+      state = 3;
     }
   }
 }
